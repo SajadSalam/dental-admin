@@ -4,7 +4,7 @@ import store from '@/store';
 export const formatNumber = (x) => {
       return numeral(x).format("0,0[.]0")
 }
-export const url = "http://localhost:1337"
+export const url = "http://158.247.235.172:1337"
 export const formatDate = (date, showTime = true) => {
   showTime;
   var formate = 'YYYY/MM/DD';
