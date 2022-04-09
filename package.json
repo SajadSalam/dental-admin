@@ -9,6 +9,7 @@
   },
   "main": "main.js",
   "dependencies": {
+    "@kangc/v-md-editor": "^1.7.9",
     "apexcharts": "^3.29.0",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",

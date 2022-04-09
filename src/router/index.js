@@ -5,7 +5,38 @@ import { isUserLoggedIn } from "@/libs/auth/utils";
 Vue.use(VueRouter);
 const routes = [
   { path: "/", redirect: { name: "subscriptions" } },
-
+  {
+    path: "/home",
+    name: "dashboard-home",
+    component: () => import("@/views/dashoard/Home.vue"),
+    meta: {
+      title: "الصفحة الرئيسية",
+    },
+  },
+  {
+    path: "/static",
+    name: "static",
+    component: () => import("@/views/static/Static.vue"),
+    meta: {
+      title: "الصفحات",
+    },
+  },
+  {
+    path: "/static/",
+    name: "add-static",
+    component: () => import("@/views/static/Add.vue"),
+    meta: {
+      title: "الصفحات",
+    },
+  },
+  {
+    path: "/static/:id",
+    name: "static",
+    component: () => import("@/views/static/Add.vue"),
+    meta: {
+      title: "تفاصيل الصفحة",
+    },
+  },
   {
     name: "subscriptions",
     path: "/subscriptions",
@@ -49,9 +80,17 @@ const routes = [
   {
     name: "dynamic-detail",
     path: "/dynamic/:id",
-    component: () => import("@/views/dynamics/DynamicDetail.vue"),
+    component: () => import("@/views/dynamics/Add.vue"),
     meta: {
       title: "تفاصيل الخبر",
+    },
+  },
+  {
+    name: "add-dynamic",
+    path: "/dynamic/add",
+    component: () => import("@/views/dynamics/Add.vue"),
+    meta: {
+      title: "اضافة خبر",
     },
   },
   {

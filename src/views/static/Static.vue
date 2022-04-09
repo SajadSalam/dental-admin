@@ -2,8 +2,9 @@
   <div>
     <v-card :loading="$store.state.loading" elevation="0" class="transparent">
       <v-card-title>
-        <h3>المتدربين</h3>
+        <h3>الصفحات</h3>
         <v-spacer></v-spacer>
+        <v-btn color="primary" :to="{ name: 'add-static' }">اضافة صفحة</v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -11,7 +12,7 @@
             <v-data-table
               :headers="headers"
               :ripple="false"
-              :items="subs"
+              :items="news"
               hide-default-footer
               :loading="$store.state.loading"
               no-data-text="لا يوجد"
@@ -28,7 +29,7 @@
               </template>
               <template v-slot:item.actions="{ item }">
                 <div class="d-flex align-center">
-                  <v-btn color="primary" :to="`/subscriptions/${item.id}`" text>
+                  <v-btn color="primary" :to="`/static/${item.id}`" text>
                     <v-icon>mdi-pencil</v-icon>
                     كل التفاصيل
                   </v-btn>
@@ -54,34 +55,13 @@ export default {
   components: {},
   data() {
     return {
-      status: {
-        pending: {
-          color: "warning",
-          text: "قيد المراجعة",
-        },
-        approved: {
-          color: "success",
-          text: "تمت الموافقة",
-        },
-        accepted: {
-          color: "success",
-          text: "مقبول",
-        },
-        rejected: {
-          color: "error",
-          text: "مرفوض",
-        },
-      },
-      provinecs: [],
-      subs: [],
+      news: [],
       total: 1,
+
       headers: [
-        { text: "الاسم", value: "name" },
-        { text: "رقم الهاتف", value: "phone_number" },
-        { text: "البريد", value: "email" },
-        { text: "تاريخ التقديم", value: "created" },
-        { text: "الحالة", value: "status" },
-        { text: "الكورس", value: "course.data.title" },
+        { text: "العنوان", value: "title" },
+        { text: "المحتوى", value:"description" },
+        { text: "الرابط", value: "slug" },
         { text: "الاجراءات", value: "actions" },
       ],
       options: {
@@ -94,33 +74,20 @@ export default {
     };
   },
   created() {
-    this.getSubs();
+    this.getnews();
   },
   methods: {
-    editRegion(item) {
-      let temp = item;
-      temp.provinecId = this.provinecs.find(
-        (provinec) => provinec.name == item.provinecName
-      ).id;
-      this.$store.commit("subs/updateItem", temp);
-
-      this.$store.commit("subs/toggleEdit");
-
-      this.$store.commit("subs/toggleDialog");
-    },
-    getSubs() {
-      this.$http
-        .get("/course-subs", { params: this.options })
-        .then((response) => {
-          this.subs = response.data.data;
-          this.total = response.data.meta.pagination.total;
-        });
+    getnews() {
+      this.$http.get("/statics", { params: this.options }).then((response) => {
+        this.news = response.data.data;
+        this.total = response.data.meta.pagination.total;
+      });
     },
   },
   watch: {
     options: {
       handler() {
-        this.getSubs();
+        this.getnews();
       },
       deep: true,
     },

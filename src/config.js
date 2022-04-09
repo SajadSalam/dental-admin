@@ -3,7 +3,7 @@ export default {
   isRTL: true,
   dark: false,
   colors: {
-    primary: "#456990", // orange
+    primary: "#6dc77a", // orange
     secondary: "#6F96AA", // grey
     accent: "#3CC2E0", // cyan
     error: "#FF606B",// red,
