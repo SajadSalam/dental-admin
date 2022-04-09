@@ -44,7 +44,7 @@
             <div class="d-flex justify-center">
               <v-pagination
                 v-model="options.pagination.page"
-                :length="parseInt(total / options.pagination.pageSize) +1 "
+                :length="parseInt(total / options.pagination.pageSize) + 1"
               />
             </div>
           </v-col>
@@ -80,7 +80,6 @@ export default {
   components: {},
   data() {
     return {
-      deleteDialog: false,
       courses: [],
       total: 1,
       headers: [
@@ -91,6 +90,7 @@ export default {
         { text: "تاريخ الانتهاء", value: "end_date" },
         { text: "الاجراءات", value: "actions" },
       ],
+      deleteDialog: false,
       toDelete: {},
       options: {
         populate: {

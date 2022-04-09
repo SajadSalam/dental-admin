@@ -82,7 +82,7 @@
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field
-                  label="العنوان"
+                  label="مكان اقامة الكورس"
                   outlined
                   v-model="inputs.address"
                   id="id"

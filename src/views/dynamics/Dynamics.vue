@@ -31,7 +31,9 @@
                 <div class="d-flex align-center">
                   <v-btn color="primary" :to="`/dynamic/${item.id}`" text>
                     <v-icon>mdi-pencil</v-icon>
-                    كل التفاصيل
+                    كل التفاصيل </v-btn
+                  ><v-btn @click="showDeleteDialog(item)" color="error" icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </div>
               </template>
@@ -48,6 +50,27 @@
         </v-row>
       </v-card-text>
     </v-card>
+    <v-dialog v-model="deleteDialog" width="400">
+      <v-card>
+        <v-card-title>
+          هل انت متأكد من حذف الخبر؟
+        </v-card-title>
+
+        <v-card-text>
+          سيتم حذف الخبر وجميع التفاصيل المرتبطة به
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" text @click="deleteItem()">
+            <v-icon>mdi-delete</v-icon>
+            حذف
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -63,10 +86,12 @@ export default {
         { text: "الرابط", value: "slug" },
         { text: "الاجراءات", value: "actions" },
       ],
+      deleteDialog: false,
+      toDelete: {},
       options: {
         populate: "*",
         pagination: {
-          page: 0,
+          page: 1,
           pageSize: 15,
         },
       },
@@ -76,6 +101,16 @@ export default {
     this.getnews();
   },
   methods: {
+    showDeleteDialog(item) {
+      this.toDelete = item;
+      this.deleteDialog = true;
+    },
+    deleteItem() {
+      this.$http.delete("/dynmics/" + this.toDelete.id).then(() => {
+        this.deleteDialog = false;
+        this.getnews();
+      });
+    },
     getnews() {
       this.$http.get("/dynmics", { params: this.options }).then((response) => {
         this.news = response.data.data;

@@ -30,7 +30,9 @@
                 <div class="d-flex align-center">
                   <v-btn color="primary" :to="`/subscriptions/${item.id}`" text>
                     <v-icon>mdi-pencil</v-icon>
-                    كل التفاصيل
+                    كل التفاصيل </v-btn
+                  ><v-btn @click="showDeleteDialog(item)" color="error" icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </div>
               </template>
@@ -47,6 +49,27 @@
         </v-row>
       </v-card-text>
     </v-card>
+    <v-dialog v-model="deleteDialog" width="400">
+      <v-card>
+        <v-card-title>
+          هل انت متأكد من حذف المتدرب؟
+        </v-card-title>
+
+        <v-card-text>
+          سيتم حذف المتدرب وجميع التفاصيل المرتبطة به
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" text @click="deleteItem()">
+            <v-icon>mdi-delete</v-icon>
+            حذف
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -84,10 +107,12 @@ export default {
         { text: "الكورس", value: "course.data.title" },
         { text: "الاجراءات", value: "actions" },
       ],
+      deleteDialog: false,
+      toDelete: {},
       options: {
         populate: "*",
         pagination: {
-          page: 0,
+          page: 1,
           pageSize: 15,
         },
       },
@@ -97,16 +122,15 @@ export default {
     this.getSubs();
   },
   methods: {
-    editRegion(item) {
-      let temp = item;
-      temp.provinecId = this.provinecs.find(
-        (provinec) => provinec.name == item.provinecName
-      ).id;
-      this.$store.commit("subs/updateItem", temp);
-
-      this.$store.commit("subs/toggleEdit");
-
-      this.$store.commit("subs/toggleDialog");
+    showDeleteDialog(item) {
+      this.toDelete = item;
+      this.deleteDialog = true;
+    },
+    deleteItem() {
+      this.$http.delete("/dynmics/" + this.toDelete.id).then(() => {
+        this.deleteDialog = false;
+        this.getSubs();
+      });
     },
     getSubs() {
       this.$http
