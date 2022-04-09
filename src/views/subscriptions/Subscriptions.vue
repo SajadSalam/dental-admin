@@ -127,7 +127,7 @@ export default {
       this.deleteDialog = true;
     },
     deleteItem() {
-      this.$http.delete("/dynmics/" + this.toDelete.id).then(() => {
+      this.$http.delete("/course-subs/" + this.toDelete.id).then(() => {
         this.deleteDialog = false;
         this.getSubs();
       });
