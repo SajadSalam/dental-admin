@@ -1,11 +1,11 @@
 export default [
-  {
-    title: "الصفحة الرئيسية",
-    route: {
-      name: "dashboard-home",
-    },
-    icon: "mdi-home",
-  },
+  // {
+  //   title: "الصفحة الرئيسية",
+  //   route: {
+  //     name: "dashboard-home",
+  //   },
+  //   icon: "mdi-home",
+  // },
   {
     title: "المتدربين",
     route: {

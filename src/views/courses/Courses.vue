@@ -24,6 +24,9 @@
               <template v-slot:item.created="{ item }">
                 {{ $service.formatDate(new Date(item.createdAt), false) }}
               </template>
+              <template v-slot:item.count="{ item }">
+                {{item.course_subs.data.length}}
+              </template>
               <template v-slot:item.actions="{ item }">
                 <div class="d-flex align-center">
                   <v-btn color="primary" :to="`/courses/${item.id}`" text>
@@ -83,18 +86,18 @@ export default {
         { text: "الاسم", value: "title" },
         { text: "الاسم انكليزي", value: "en_title" },
         { text: "الوصف", value: "description" },
+        { text: "عدد المتدربين", value: "count" },
         { text: "تاريخ الانتهاء", value: "end_date" },
         { text: "الاجراءات", value: "actions" },
       ],
       toDelete: {},
       options: {
-        populate: "*",
+        populate: '*',
         pagination: {
           page: 0,
           pageSize: 15,
         },
       },
-      
     };
   },
   created() {
@@ -106,7 +109,7 @@ export default {
       this.deleteDialog = true;
     },
     deleteItem() {
-      this.$http.delete('/courses/' + this.toDelete.id).then(() => {
+      this.$http.delete("/courses/" + this.toDelete.id).then(() => {
         this.deleteDialog = false;
         this.getcourses();
       });

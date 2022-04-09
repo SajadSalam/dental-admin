@@ -149,7 +149,7 @@
           <v-card-text>
             <v-img
               contain
-              :src="$service.url + sub.course.data.images.data.url"
+              :src="$service.url + sub.course.data.images_url"
               class="rounded"
             />
             <p class="mt-2">
