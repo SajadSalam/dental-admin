@@ -44,7 +44,7 @@
             <div class="d-flex justify-center">
               <v-pagination
                 v-model="options.pagination.page"
-                :length="parseInt(total / options.pagination.pageSize) + 1"
+                :length="parseInt(total / options.pagination.pageSize) +1 "
               />
             </div>
           </v-col>
@@ -100,7 +100,7 @@ export default {
         },
         pagination: {
           page: 1,
-          pageSize: 15,
+          pageSize: 10,
         },
       },
     };
