@@ -30,6 +30,9 @@
                     <v-icon>mdi-pencil</v-icon>
                     كل التفاصيل
                   </v-btn>
+                  <v-btn @click="showDeleteDialog(item)" color="error" icon>
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
                 </div>
               </template>
             </v-data-table>
@@ -45,6 +48,27 @@
         </v-row>
       </v-card-text>
     </v-card>
+    <v-dialog v-model="deleteDialog" width="400">
+      <v-card>
+        <v-card-title>
+          هل انت متأكد من حذف الكورس؟
+        </v-card-title>
+
+        <v-card-text>
+          سيتم حذف الكورس وجميع التفاصيل المرتبطة به
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" text @click="deleteItem()">
+            <v-icon>mdi-delete</v-icon>
+            حذف
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -52,6 +76,7 @@ export default {
   components: {},
   data() {
     return {
+      deleteDialog: false,
       courses: [],
       total: 1,
       headers: [
@@ -61,6 +86,7 @@ export default {
         { text: "تاريخ الانتهاء", value: "end_date" },
         { text: "الاجراءات", value: "actions" },
       ],
+      toDelete: {},
       options: {
         populate: "*",
         pagination: {
@@ -68,27 +94,29 @@ export default {
           pageSize: 15,
         },
       },
+      
     };
   },
   created() {
     this.getcourses();
   },
   methods: {
-    editRegion(item) {
-      let temp = item;
-      temp.provinecId = this.provinecs.find(
-        (provinec) => provinec.name == item.provinecName
-      ).id;
-      this.$store.commit("courses/updateItem", temp);
-
-      this.$store.commit("courses/toggleEdit");
-
-      this.$store.commit("courses/toggleDialog");
+    showDeleteDialog(item) {
+      this.toDelete = item;
+      this.deleteDialog = true;
+    },
+    deleteItem() {
+      this.$http.delete('/courses/' + this.toDelete.id).then(() => {
+        this.deleteDialog = false;
+        this.getcourses();
+      });
     },
     getcourses() {
+      this.$store.commit("setLoading", true);
       this.$http.get("/courses", { params: this.options }).then((response) => {
         this.courses = response.data.data;
         this.total = response.data.meta.pagination.total;
+        this.$store.commit("setLoading", false);
       });
     },
   },

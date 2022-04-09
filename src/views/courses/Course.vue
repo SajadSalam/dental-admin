@@ -108,11 +108,11 @@
       </v-col>
       <v-col v-if="isEdit" cols="12" md="3">
         <v-card>
-          <v-card-title> </v-card-title>
+          <v-card-title> صوره الكورس </v-card-title>
           <v-card-text>
             <v-img
               contain
-              :src="$service.url + course.images.data.url"
+              :src="$service.url + course.image_url"
               class="rounded"
             />
           </v-card-text>
@@ -138,6 +138,7 @@ export default {
         content: "",
       },
       isEdit: false,
+      date: false,
     };
   },
   methods: {
@@ -154,6 +155,7 @@ export default {
             data,
           })
           .then(() => {
+            this.$store.commit("setLoading", false);
             this.getcourse();
           })
           .catch((e) => {
