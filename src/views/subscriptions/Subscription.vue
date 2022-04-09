@@ -187,6 +187,7 @@ export default {
       sub: {},
       col: {},
       toEdit: [],
+      inputs:{}
     };
   },
   methods: {
@@ -211,10 +212,18 @@ export default {
     },
     update() {
       this.$store.commit("setLoading", true);
-      let data = {};
-      this.toEdit.forEach((key) => {
-        data[key] = this.sub[key];
-      });
+      this.inputs = {
+        name: this.sub.name,
+        en_name: this.sub.en_name,
+        phone_number: this.sub.phone_number,
+        email: this.sub.email,
+        hospital: this.sub.hospital,
+        hospital_address: this.sub.hospital_address,
+        pro_name: this.sub.pro_name,
+        job: this.sub.job,
+        address: this.sub.address,
+      }
+      let data = this.inputs;
       this.$http
         .put("/course-subs/" + this.sub.id, {
           data,

@@ -74,7 +74,7 @@ export default {
           .then(
             () => {
               this.loading = false;
-              this.$router.push({ name: "statics" });
+              this.$router.push("/statics");
             },
             (error) => {
               this.loading = false;
