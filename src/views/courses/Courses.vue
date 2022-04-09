@@ -25,7 +25,7 @@
                 {{ $service.formatDate(new Date(item.createdAt), false) }}
               </template>
               <template v-slot:item.count="{ item }">
-                {{item.course_subs.data.length}}
+                {{ item.course_subs.data.length }}
               </template>
               <template v-slot:item.actions="{ item }">
                 <div class="d-flex align-center">
@@ -75,6 +75,7 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   components: {},
   data() {
@@ -92,9 +93,13 @@ export default {
       ],
       toDelete: {},
       options: {
-        populate: '*',
+        populate: {
+          course_subs: {
+            fields: ["id"],
+          },
+        },
         pagination: {
-          page: 0,
+          page: 1,
           pageSize: 15,
         },
       },
@@ -116,11 +121,18 @@ export default {
     },
     getcourses() {
       this.$store.commit("setLoading", true);
-      this.$http.get("/courses", { params: this.options }).then((response) => {
-        this.courses = response.data.data;
-        this.total = response.data.meta.pagination.total;
-        this.$store.commit("setLoading", false);
-      });
+      this.$http
+        .get("/courses", {
+          params: this.options,
+          paramsSerializer: function paramsSerializer(params) {
+            return qs.stringify(params);
+          },
+        })
+        .then((response) => {
+          this.courses = response.data.data;
+          this.total = response.data.meta.pagination.total;
+          this.$store.commit("setLoading", false);
+        });
     },
   },
   watch: {

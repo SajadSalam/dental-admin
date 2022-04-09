@@ -44,6 +44,14 @@
                   id="id"
                 ></v-text-field>
               </v-col>
+              <v-col cols="12" md="12">
+                <v-textarea
+                  label="الوصف بالعربي"
+                  outlined
+                  v-model="inputs.description"
+                  id="id"
+                ></v-textarea>
+              </v-col>
               <v-col cols="12" md="6">
                 <v-menu
                   v-model="date"

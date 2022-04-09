@@ -70,7 +70,7 @@ export default {
         this.loading = true;
       if (this.isEdit) {
         this.$http
-          .put("/statics/" + this.inputs.data.id, this.inputs.data)
+          .put("/statics/" + this.inputs.data.id, this.inputs)
           .then(
             () => {
               this.loading = false;
