@@ -1,39 +1,93 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="12" md="9">
+      <v-col cols="12" :md="isEdit ? 9 : 12">
         <v-card v-if="!$store.state.loading" :loading="$store.state.loading">
           <v-card-title>
-            تفاصيل الكورس {{ course.title }}
+            <span v-if="isEdit"> تفاصيل الكورس {{ course.title }} </span>
+            <span v-else>
+              اضافة كورس
+            </span>
             <v-spacer></v-spacer>
           </v-card-title>
           <v-card-text>
             <v-row>
-              <template v-for="(field, key) in course">
-                <v-col
-                  cols="6"
-                  :key="key"
-                  v-if="
-                    key != 'course' &&
-                      key != 'images' &&
-                      key != 'createdAt' &&
-                      key != 'updatedAt' &&
-                      key != 'publishedAt' &&
-                      key != 'id' &&
-                      key != 'status' &&
-                      key != 'specialty'
-                  "
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="العنوان بالعربي"
+                  outlined
+                  v-model="inputs.title"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="العنوان بالانجليزي"
+                  outlined
+                  v-model="inputs.en_title"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="المدفوعات"
+                  outlined
+                  v-model="inputs.fees"
+                  prepend-icon="mdi-currency-usd"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="المدة"
+                  outlined
+                  v-model="inputs.duration"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-menu
+                  v-model="date"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
                 >
-                  {{ addToEdit(key) }}
-                  <v-text-field
-                    :name="key"
-                    :label="key"
-                    v-model="course[key]"
-                    outlined
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-              </template>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="inputs.end_date"
+                      label="تاريخ الانتهاء"
+                      outlined
+                      append-icon="mdi-calendar"
+                      readonly
+                      hide-details="auto"
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    locale="ar"
+                    v-model="inputs.end_date"
+                    @input="date = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="العنوان"
+                  outlined
+                  v-model="inputs.address"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12">
+                <v-md-editor
+                  v-model="inputs.content"
+                  :text="inputs.content"
+                  height="400px"
+                ></v-md-editor>
+              </v-col>
+
               <v-col cols="12">
                 <div class="d-flex justify-end">
                   <v-btn
@@ -44,7 +98,7 @@
                     @click="update"
                   >
                     <v-icon>mdi-pencil</v-icon>
-                    تعديل
+                    {{ isEdit ? "تعديل" : "اضافة" }}
                   </v-btn>
                 </div>
               </v-col>
@@ -52,7 +106,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="3">
+      <v-col v-if="isEdit" cols="12" md="3">
         <v-card>
           <v-card-title> </v-card-title>
           <v-card-text>
@@ -74,6 +128,16 @@ export default {
     return {
       course: {},
       toEdit: [],
+      inputs: {
+        title: "",
+        en_title: "",
+        fees: "",
+        duration: "",
+        end_date: "",
+        address: "",
+        content: "",
+      },
+      isEdit: false,
     };
   },
   methods: {
@@ -82,24 +146,37 @@ export default {
     },
     update() {
       this.$store.commit("setLoading", true);
-      let data = {};
-      this.toEdit.forEach((key) => {
-        data[key] = this.course[key];
-      });
-      this.$http
-        .put("/courses/" + this.course.id, {
-          data,
-        })
-        .then(() => {
-          this.getcourse();
-        })
-        .catch((e) => {
-          this.$store.commit("setLoading", false);
-          console.log(e);
-        });
+      this.inputs.end_date = new Date(this.inputs.end_date).toISOString();
+      let data = this.inputs;
+      if (this.isEdit) {
+        this.$http
+          .put("/courses/" + this.course.id, {
+            data,
+          })
+          .then(() => {
+            this.getcourse();
+          })
+          .catch((e) => {
+            this.$store.commit("setLoading", false);
+            console.log(e);
+          });
+      } else {
+        this.$http
+          .post("/courses", {
+            data,
+          })
+          .then(() => {
+            this.$router.push("/courses");
+          })
+          .catch((e) => {
+            this.$store.commit("setLoading", false);
+            console.log(e);
+          });
+      }
     },
-    getcourse() {
-      this.$store.commit("setLoading", true);
+  },
+  created() {
+    if (this.$route.params.id != undefined) {
       this.$http
         .get("/courses/" + this.$route.params.id, {
           params: {
@@ -109,15 +186,14 @@ export default {
             return qs.stringify(params);
           },
         })
-        .then((res) => {
-          console.log(res);
-          this.course = res.data.data;
-          this.$store.commit("setLoading", false);
+        .then(({ data }) => {
+          this.course = data.data;
+          this.inputs = data.data;
+          this.text = data.content;
+          this.isEdit = true;
+          this.loading = false;
         });
-    },
-  },
-  created() {
-    this.getcourse();
+    }
   },
 };
 </script>

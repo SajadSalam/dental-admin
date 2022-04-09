@@ -70,6 +70,14 @@ const routes = [
     },
   },
   {
+    name: "course-add",
+    path: "/courses-add",
+    component: () => import("@/views/courses/Course.vue"),
+    meta: {
+      title: "اضافة كورس",
+    },
+  },
+  {
     name: "dynamic",
     path: "/dynamic",
     component: () => import("@/views/dynamics/Dynamics.vue"),

@@ -15,30 +15,79 @@
           </v-card-title>
           <v-card-text>
             <v-row>
-              <template v-for="(field, key) in sub">
-                <v-col
-                  cols="6"
-                  :key="key"
-                  v-if="
-                    key != 'course' &&
-                      key != 'images' &&
-                      key != 'createdAt' &&
-                      key != 'updatedAt' &&
-                      key != 'publishedAt' &&
-                      key != 'id' &&
-                      key != 'status'
-                  "
-                >
-                  {{ addToEdit(key) }}
-                  <v-text-field
-                    :name="key"
-                    :label="key"
-                    v-model="sub[key]"
-                    outlined
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-              </template>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="الاسم الكامل بالعربي"
+                  outlined
+                  v-model="sub.name"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="الاسم الكامل بالانجليزي"
+                  outlined
+                  v-model="sub.en_name"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="رقم الهاتف"
+                  outlined
+                  v-model="sub.phone_number"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="البريد الالكتروني"
+                  outlined
+                  v-model="sub.email"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="محل العمل"
+                  outlined
+                  v-model="sub.hospital"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="عنوان محل العمل"
+                  outlined
+                  v-model="sub.hospital_address"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="اسم الاختصاص"
+                  outlined
+                  v-model="sub.pro_name"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  label="العنوان الوظيفي"
+                  outlined
+                  v-model="sub.job"
+                  id="id"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12">
+                <v-textarea
+                  label="العنوان"
+                  outlined
+                  v-model="sub.address"
+                  id="id"
+                ></v-textarea>
+              </v-col>
+
               <v-col cols="12">
                 <div class="d-flex justify-end">
                   <v-btn
@@ -93,7 +142,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="3">
-        <v-card>
+        <v-card v-if="!$store.state.loading">
           <v-card-title>
             {{ sub.course.data.title }}
           </v-card-title>

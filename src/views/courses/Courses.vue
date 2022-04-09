@@ -2,8 +2,12 @@
   <div>
     <v-card :loading="$store.state.loading" elevation="0" class="transparent">
       <v-card-title>
-        <h3>الكورسيات</h3>
+        <h3>الكورسات</h3>
         <v-spacer></v-spacer>
+        <v-btn :to="'/courses-add'" color="primary">
+          <v-icon>mdi-plus</v-icon>
+          إضافة
+        </v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>
