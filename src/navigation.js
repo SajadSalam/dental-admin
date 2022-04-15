@@ -7,6 +7,13 @@ export default [
   //   icon: "mdi-home",
   // },
   {
+    title: "المدربين",
+    route: {
+      name: "trainers",
+    },
+    icon: "mdi-account-multiple-check-outline",
+  },
+  {
     title: "المتدربين",
     route: {
       name: "subscriptions",

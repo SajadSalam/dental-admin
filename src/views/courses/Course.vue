@@ -11,106 +11,122 @@
             <v-spacer></v-spacer>
           </v-card-title>
           <v-card-text>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="العنوان بالعربي"
-                  outlined
-                  v-model="inputs.title"
-                  id="id"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="العنوان بالانجليزي"
-                  outlined
-                  v-model="inputs.en_title"
-                  id="id"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="المدفوعات"
-                  outlined
-                  v-model="inputs.fees"
-                  prepend-icon="mdi-currency-usd"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="المدة"
-                  outlined
-                  v-model="inputs.duration"
-                  id="id"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="12">
-                <v-textarea
-                  label="الوصف بالعربي"
-                  outlined
-                  v-model="inputs.description"
-                  id="id"
-                ></v-textarea>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-menu
-                  v-model="date"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="inputs.end_date"
-                      label="تاريخ الانتهاء"
-                      outlined
-                      append-icon="mdi-calendar"
-                      readonly
-                      hide-details="auto"
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    locale="ar"
-                    v-model="inputs.end_date"
-                    @input="date = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="مكان اقامة الكورس"
-                  outlined
-                  v-model="inputs.address"
-                  id="id"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="12">
-                <v-md-editor
-                  v-model="inputs.content"
-                  :text="inputs.content"
-                  height="400px"
-                ></v-md-editor>
-              </v-col>
-
-              <v-col cols="12">
-                <div class="d-flex justify-end">
-                  <v-btn
-                    large
-                    :loading="$store.state.loading"
-                    :disabled="$store.state.loading"
-                    color="primary"
-                    @click="update"
+            <v-form v-model="vaild">
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    label="العنوان بالعربي"
+                    outlined
+                    :rules="[$rules.required()]"
+                    v-model="inputs.title"
+                    id="id"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    label="العنوان بالانجليزي"
+                    outlined
+                    v-model="inputs.en_title"
+                    :rules="[$rules.required()]"
+                    id="id"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    label="المدفوعات"
+                    outlined
+                    v-model="inputs.fees"
+                    :rules="[$rules.required()]"
+                    prepend-icon="mdi-currency-usd"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    label="المدة"
+                    outlined
+                    v-model="inputs.duration"
+                    :rules="[$rules.required()]"
+                    id="id"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="12">
+                  <v-textarea
+                    label="الوصف بالعربي"
+                    outlined
+                    v-model="inputs.description"
+                    id="id"
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-menu
+                    v-model="date"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
                   >
-                    <v-icon>mdi-pencil</v-icon>
-                    {{ isEdit ? "تعديل" : "اضافة" }}
-                  </v-btn>
-                </div>
-              </v-col>
-            </v-row>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="inputs.end_date"
+                        label="تاريخ الانتهاء"
+                        outlined
+                        append-icon="mdi-calendar"
+                        readonly
+                        hide-details="auto"
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      locale="ar"
+                      v-model="inputs.end_date"
+                      @input="date = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    label="مكان اقامة الكورس"
+                    outlined
+                    v-model="inputs.address"
+                    :rules="[$rules.required()]"
+                    id="id"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="12">
+                  <v-md-editor
+                    v-model="inputs.content"
+                    :text="inputs.content"
+                    :rules="[$rules.required()]"
+                    height="400px"
+                  ></v-md-editor>
+                </v-col>
+                <v-col cols="12" md="12">
+                  <v-file-input
+                    v-model="file"
+                    @change="onFileChanged"
+                    label="اختر صوره"
+                    accept="image/*"
+                    outlined
+                  ></v-file-input>
+                </v-col>
+                <v-col cols="12">
+                  <div class="d-flex justify-end">
+                    <v-btn
+                      large
+                      :loading="$store.state.loading"
+                      :disabled="!vaild"
+                      color="primary"
+                      @click="update"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                      {{ isEdit ? "تعديل" : "اضافة" }}
+                    </v-btn>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-card-text>
         </v-card>
       </v-col>
@@ -118,11 +134,25 @@
         <v-card>
           <v-card-title> صوره الكورس </v-card-title>
           <v-card-text>
+            <v-file-input
+              v-model="file"
+              @change="onFileChanged"
+              label="اختر صوره"
+              accept="image/*"
+              outlined
+            ></v-file-input>
+
             <v-img
               contain
-              :src="$service.url + course.image_url"
+              :src="image == null ? $service.url + course.image_url : image"
               class="rounded"
             />
+            <div class="d-flex justify-end mt-2">
+              <v-btn v-if="file != null" @click="editPhoto" color="info">
+                <v-icon>mdi-camera</v-icon>
+                تعديل
+              </v-btn>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -136,6 +166,9 @@ export default {
     return {
       course: {},
       toEdit: [],
+      image: null,
+      file: null,
+      vaild: false,
       inputs: {
         title: "",
         en_title: "",
@@ -144,16 +177,18 @@ export default {
         end_date: "",
         address: "",
         content: "",
+        image_url: "",
       },
       isEdit: false,
       date: false,
+      uploaded: false,
     };
   },
   methods: {
     addToEdit(key) {
       this.toEdit.push(key);
     },
-    update() {
+    async update() {
       this.$store.commit("setLoading", true);
       this.inputs.end_date = new Date(this.inputs.end_date).toISOString();
       let data = this.inputs;
@@ -171,6 +206,10 @@ export default {
             console.log(e);
           });
       } else {
+        if (this.file != null) {
+          let img = await this.$service.uploadFile(this.file);
+          data.image_url = img.url;
+        }
         this.$http
           .post("/courses", {
             data,
@@ -184,26 +223,53 @@ export default {
           });
       }
     },
+    onFileChanged() {
+      if (this.file != null) {
+        // this.file = e.target.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(this.file);
+        reader.onload = () => {
+          this.image = reader.result;
+        };
+      }
+    },
+    async editPhoto() {
+      if (this.file != null) {
+        let img = await this.$service.uploadFile(this.file);
+
+        await this.$http.put("/courses/" + this.course.id, {
+          data: {
+            image_url: img.url,
+          },
+        });
+        this.file = null;
+        this.image = null;
+        this.getcourse();
+      }
+    },
+    getcourse() {
+      if (this.$route.params.id != undefined) {
+        this.$http
+          .get("/courses/" + this.$route.params.id, {
+            params: {
+              populate: "*",
+            },
+            paramsSerializer: function paramsSerializer(params) {
+              return qs.stringify(params);
+            },
+          })
+          .then(({ data }) => {
+            this.course = data.data;
+            this.inputs = data.data;
+            this.text = data.content;
+            this.isEdit = true;
+            this.loading = false;
+          });
+      }
+    },
   },
   created() {
-    if (this.$route.params.id != undefined) {
-      this.$http
-        .get("/courses/" + this.$route.params.id, {
-          params: {
-            populate: "*",
-          },
-          paramsSerializer: function paramsSerializer(params) {
-            return qs.stringify(params);
-          },
-        })
-        .then(({ data }) => {
-          this.course = data.data;
-          this.inputs = data.data;
-          this.text = data.content;
-          this.isEdit = true;
-          this.loading = false;
-        });
-    }
+    this.getcourse();
   },
 };
 </script>

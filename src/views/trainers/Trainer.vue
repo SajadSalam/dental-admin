@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-row>
+    <v-row justify="center">
       <v-col cols="12" md="9">
         <v-card :loading="$store.state.loading">
           <v-card-title>
-            تفاصيل المتدرب {{ sub.name }}
+            تفاصيل المدرب {{ sub.name }}
             <v-spacer></v-spacer>
             <div v-if="!$store.state.loading">
               <v-chip label :color="status[sub.status].color">
@@ -17,25 +17,18 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-text-field
-                  label="الاسم الكامل بالعربي"
+                  label="الاسم الكامل"
                   outlined
                   v-model="sub.name"
                   id="id"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="الاسم الكامل بالانجليزي"
-                  outlined
-                  v-model="sub.en_name"
-                  id="id"
-                ></v-text-field>
-              </v-col>
+
               <v-col cols="12" md="6">
                 <v-text-field
                   label="رقم الهاتف"
-                  outlined
                   dir="ltr"
+                  outlined
                   v-model="sub.phone_number"
                   id="id"
                 ></v-text-field>
@@ -50,33 +43,25 @@
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field
-                  label="محل العمل"
+                  label="موقع العمل"
                   outlined
-                  v-model="sub.hospital"
+                  v-model="sub.work_place"
                   id="id"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field
-                  label="عنوان محل العمل"
+                  label="المهنة"
                   outlined
-                  v-model="sub.hospital_address"
+                  v-model="sub.job_title"
                   id="id"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field
-                  label="اسم الاختصاص"
+                  label="المؤهل العلمي"
                   outlined
-                  v-model="sub.pro_name"
-                  id="id"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field
-                  label="العنوان الوظيفي"
-                  outlined
-                  v-model="sub.job"
+                  v-model="sub.cert"
                   id="id"
                 ></v-text-field>
               </v-col>
@@ -84,7 +69,7 @@
                 <v-textarea
                   label="العنوان"
                   outlined
-                  v-model="sub.address"
+                  v-model="sub.course"
                   id="id"
                 ></v-textarea>
               </v-col>
@@ -92,11 +77,10 @@
                 <v-btn
                   color="warning"
                   tag="a"
-                  :href="$service.url + sub.ima_id"
+                  :href="$service.url + sub.cv_url"
                   target="_blank"
                 >
-                  <v-icon>mdi-file</v-icon>
-                  تنزيل الهوية 
+                  السيرة الذاتية
                 </v-btn>
               </v-col>
               <v-col cols="12">
@@ -152,23 +136,6 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="3">
-        <v-card v-if="!$store.state.loading">
-          <v-card-title>
-            {{ sub.course.data.title }}
-          </v-card-title>
-          <v-card-text>
-            <v-img
-              contain
-              :src="$service.url + sub.course.data.images_url"
-              class="rounded"
-            />
-            <p class="mt-2">
-              {{ sub.course.data.description }}
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-col>
     </v-row>
   </div>
 </template>
@@ -198,7 +165,7 @@ export default {
       sub: {},
       col: {},
       toEdit: [],
-      inputs:{}
+      inputs: {},
     };
   },
   methods: {
@@ -208,7 +175,7 @@ export default {
     changeStatus(status) {
       this.$store.commit("setLoading", true);
       this.$http
-        .put("/course-subs/" + this.sub.id, {
+        .put("/trainers/" + this.sub.id, {
           data: {
             status: status,
           },
@@ -225,18 +192,16 @@ export default {
       this.$store.commit("setLoading", true);
       this.inputs = {
         name: this.sub.name,
-        en_name: this.sub.en_name,
-        phone_number: this.sub.phone_number,
         email: this.sub.email,
-        hospital: this.sub.hospital,
-        hospital_address: this.sub.hospital_address,
-        pro_name: this.sub.pro_name,
-        job: this.sub.job,
-        address: this.sub.address,
-      }
+        phone_number: this.sub.phone_number,
+        cert: this.sub.cert,
+        work_place: this.sub.work_place,
+        job_title: this.sub.job_title,
+        course: this.sub.course,
+      };
       let data = this.inputs;
       this.$http
-        .put("/course-subs/" + this.sub.id, {
+        .put("/trainers/" + this.sub.id, {
           data,
         })
         .then(() => {
@@ -250,7 +215,7 @@ export default {
     getSub() {
       this.$store.commit("setLoading", true);
       this.$http
-        .get("/course-subs/" + this.$route.params.id, {
+        .get("/trainers/" + this.$route.params.id, {
           params: {
             populate: {
               course: {

@@ -54,6 +54,22 @@ const routes = [
     },
   },
   {
+    name: "trainers",
+    path: "/trainers",
+    component: () => import("@/views/trainers/Trainers.vue"),
+    meta: {
+      title: "المدربين",
+    },
+  },
+  {
+    name: "trainer",
+    path: "/trainers/:id",
+    component: () => import("@/views/trainers/Trainer.vue"),
+    meta: {
+      title: "تفاصيل المدرب",
+    },
+  },
+  {
     name: "courses",
     path: "/courses",
     component: () => import("@/views/courses/Courses.vue"),
