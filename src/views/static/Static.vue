@@ -4,7 +4,7 @@
       <v-card-title>
         <h3>الصفحات</h3>
         <v-spacer></v-spacer>
-        <v-btn color="primary" :to="{ name: 'add-static' }">اضافة صفحة</v-btn>
+        <!-- <v-btn color="primary" :to="{ name: 'add-static' }">اضافة صفحة</v-btn> -->
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -67,7 +67,7 @@ export default {
       options: {
         populate: "*",
         pagination: {
-          page: 0,
+          page: 1,
           pageSize: 15,
         },
       },
