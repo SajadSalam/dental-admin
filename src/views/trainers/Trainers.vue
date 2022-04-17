@@ -132,9 +132,11 @@ export default {
       });
     },
     getSubs() {
+      this.$store.commit("setLoading", true);
       this.$http.get("/trainers", { params: this.options }).then((response) => {
         this.subs = response.data.data;
         this.total = response.data.meta.pagination.total;
+        this.$store.commit("setLoading", false);
       });
     },
   },

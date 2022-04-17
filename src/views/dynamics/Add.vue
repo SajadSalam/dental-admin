@@ -5,7 +5,7 @@
         {{ isEdit ? "تفاصيل الخبر" : "اضافة خبر" }}
       </v-card-title>
       <v-card-text>
-        <v-row>
+        <v-row v-if="!$store.state.loading">
           <v-col cols="12" :md="isEdit ? 9 : 12">
             <v-card :loading="loading">
               <v-card-text>
@@ -96,6 +96,9 @@
             </v-card>
           </v-col>
         </v-row>
+        <div v-else class="d-flex justify-center mt-10 pt-10">
+          <v-progress-circular indeterminate size="60"></v-progress-circular>
+        </div>
       </v-card-text>
     </v-card>
   </div>
@@ -123,15 +126,15 @@ export default {
   },
   methods: {
     async add() {
-      this.loading = true;
+      this.$store.commit("setLoading", true);
       if (this.isEdit) {
         this.$http.put("/dynmics/" + this.inputs.data.id, this.inputs).then(
           () => {
-            this.loading = false;
+            this.$store.commit("setLoading", false);
             this.$router.push({ name: "dynamic" });
           },
           (error) => {
-            this.loading = false;
+            this.$store.commit("setLoading", false);
             console.log(error);
           }
         );
@@ -147,6 +150,7 @@ export default {
     },
     async editPhoto() {
       if (this.file != null) {
+        this.$store.commit("setLoading", true);
         let img = await this.$service.uploadFile(this.file);
 
         await this.$http.put("/dynmics/" + this.$route.params.id, {
@@ -156,12 +160,12 @@ export default {
         });
         this.file = null;
         this.image = null;
-        this.loading = true;
+        this.$store.commit("setLoading", true);
         this.$http.get("/dynmics/" + this.$route.params.id).then(({ data }) => {
           this.inputs.data = data.data;
           this.text = data.content;
           this.isEdit = true;
-          this.loading = false;
+          this.$store.commit("setLoading", false);
         });
       }
     },
@@ -181,12 +185,12 @@ export default {
       "v-md-editor__left-area-title"
     )[0].innerHTML = "المحتوى";
     if (this.$route.params.id != undefined) {
-      this.loading = true;
+      this.$store.commit("setLoading", true);
       this.$http.get("/dynmics/" + this.$route.params.id).then(({ data }) => {
         this.inputs.data = data.data;
         this.text = data.content;
         this.isEdit = true;
-        this.loading = false;
+        this.$store.commit("setLoading", false);
       });
     }
   },

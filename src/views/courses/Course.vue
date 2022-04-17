@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row>
+    <v-row v-if="!$store.state.loading">
       <v-col cols="12" :md="isEdit ? 9 : 12">
         <v-card v-if="!$store.state.loading" :loading="$store.state.loading">
           <v-card-title>
@@ -11,7 +11,11 @@
             <v-spacer></v-spacer>
           </v-card-title>
           <v-card-text>
-            <v-form v-model="vaild">
+            <v-form
+              :loading="$store.state.loading"
+              :disabled="$store.state.loading"
+              v-model="vaild"
+            >
               <v-row>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -102,7 +106,7 @@
                     height="400px"
                   ></v-md-editor>
                 </v-col>
-                <v-col cols="12" md="12">
+                <v-col v-if="!isEdit" cols="12" md="12">
                   <v-file-input
                     v-model="file"
                     @change="onFileChanged"
@@ -157,6 +161,9 @@
         </v-card>
       </v-col>
     </v-row>
+    <div v-else class="d-flex justify-center mt-10 pt-10">
+      <v-progress-circular indeterminate size="60"></v-progress-circular>
+    </div>
   </div>
 </template>
 <script>
@@ -235,6 +242,7 @@ export default {
     },
     async editPhoto() {
       if (this.file != null) {
+        this.$store.commit("setLoading", true);
         let img = await this.$service.uploadFile(this.file);
 
         await this.$http.put("/courses/" + this.course.id, {
@@ -249,6 +257,7 @@ export default {
     },
     getcourse() {
       if (this.$route.params.id != undefined) {
+        this.$store.commit("setLoading", true);
         this.$http
           .get("/courses/" + this.$route.params.id, {
             params: {
@@ -263,13 +272,17 @@ export default {
             this.inputs = data.data;
             this.text = data.content;
             this.isEdit = true;
-            this.loading = false;
+            this.$store.commit("setLoading", false);
+            this.$store.commit("setLoading", false);
           });
       }
     },
   },
   created() {
-    this.getcourse();
+    if (this.$route.params.id != undefined) {
+      this.isEdit;
+      this.getcourse();
+    }
   },
 };
 </script>

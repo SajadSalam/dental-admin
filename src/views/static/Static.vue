@@ -60,7 +60,7 @@ export default {
 
       headers: [
         { text: "العنوان", value: "title" },
-        { text: "المحتوى", value:"description" },
+        { text: "المحتوى", value: "description" },
         { text: "الرابط", value: "slug" },
         { text: "الاجراءات", value: "actions" },
       ],
@@ -78,9 +78,11 @@ export default {
   },
   methods: {
     getnews() {
+      this.$store.commit("setLoading", true);
       this.$http.get("/statics", { params: this.options }).then((response) => {
         this.news = response.data.data;
         this.total = response.data.meta.pagination.total;
+        this.$store.commit("setLoading", false);
       });
     },
   },
