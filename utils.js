@@ -26,7 +26,7 @@ export const uploadFile = (file) => {
   return new Promise((resolve, reject) => {
     var formData = new FormData();
     formData.append("files", file);
-    fetch("http://158.247.235.172*/api/upload", {
+    fetch("http://158.247.235.172:1337/api/upload", {
       method: "POST",
       body: formData,
     })

@@ -22,12 +22,13 @@
                     outlined
                     label="الرابط"
                     v-model="inputs.data.slug"
+                    disabled
                     placeholder="سيظهر في الرابط"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="12">
                   <v-md-editor
-                    v-model="inputs.data.content"
+                     v-model="inputs.data.content"
                     :text="text"
                     height="400px"
                   ></v-md-editor>
