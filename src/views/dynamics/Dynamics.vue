@@ -74,6 +74,7 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   components: {},
   data() {
@@ -113,11 +114,18 @@ export default {
     },
     getnews() {
       this.$store.commit("setLoading", true);
-      this.$http.get("/dynmics", { params: this.options }).then((response) => {
-        this.news = response.data.data;
-        this.total = response.data.meta.pagination.total;
-        this.$store.commit("setLoading", false);
-      });
+      this.$http
+        .get("/dynmics", {
+          params: this.options,
+          paramsSerializer: function paramsSerializer(params) {
+            return qs.stringify(params);
+          },
+        })
+        .then((response) => {
+          this.news = response.data.data;
+          this.total = response.data.meta.pagination.total;
+          this.$store.commit("setLoading", false);
+        });
     },
   },
   watch: {

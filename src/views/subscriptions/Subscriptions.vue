@@ -24,6 +24,11 @@
                 <v-chip label :color="status[item.status].color">
                   {{ status[item.status].text }}
                 </v-chip>
+                <!-- {{ sub.status }} --> </template
+              ><template v-slot:item.phone_number="{ item }">
+                <span dir="ltr">
+                  {{ item.phone_number }}
+                </span>
                 <!-- {{ sub.status }} -->
               </template>
               <template v-slot:item.actions="{ item }">
@@ -73,6 +78,7 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   components: {},
   data() {
@@ -133,10 +139,14 @@ export default {
       });
     },
     getSubs() {
-      
-        this.$store.commit("setLoading", true);
+      this.$store.commit("setLoading", true);
       this.$http
-        .get("/course-subs", { params: this.options })
+        .get("/course-subs", {
+          params: this.options,
+          paramsSerializer: function paramsSerializer(params) {
+            return qs.stringify(params);
+          },
+        })
         .then((response) => {
           this.subs = response.data.data;
           this.total = response.data.meta.pagination.total;

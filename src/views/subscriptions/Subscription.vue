@@ -96,7 +96,7 @@
                   target="_blank"
                 >
                   <v-icon>mdi-file</v-icon>
-                  تنزيل الهوية 
+                  تنزيل الهوية
                 </v-btn>
               </v-col>
               <v-col cols="12">
@@ -153,7 +153,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="3">
-        <v-card v-if="!$store.state.loading">
+        <v-card v-if="sub.course.data != undefined">
           <v-card-title>
             {{ sub.course.data.title }}
           </v-card-title>
@@ -168,6 +168,9 @@
             </p>
           </v-card-text>
         </v-card>
+        <p class="text-center mt-10">
+          تم حذف الكورس الذي تم تسجيله من قبل هذا المتدرب
+        </p>
       </v-col>
     </v-row>
   </div>
@@ -198,7 +201,7 @@ export default {
       sub: {},
       col: {},
       toEdit: [],
-      inputs:{}
+      inputs: {},
     };
   },
   methods: {
@@ -233,7 +236,7 @@ export default {
         pro_name: this.sub.pro_name,
         job: this.sub.job,
         address: this.sub.address,
-      }
+      };
       let data = this.inputs;
       this.$http
         .put("/course-subs/" + this.sub.id, {

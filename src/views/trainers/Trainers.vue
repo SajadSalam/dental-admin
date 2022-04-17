@@ -26,6 +26,12 @@
                 </v-chip>
                 <!-- {{ sub.status }} -->
               </template>
+              <template v-slot:item.phone_number="{ item }">
+                <span dir="ltr">
+                  {{ item.phone_number }}
+                </span>
+                <!-- {{ sub.status }} -->
+              </template>
               <template v-slot:item.actions="{ item }">
                 <div class="d-flex align-center">
                   <v-btn color="primary" :to="`/trainers/${item.id}`" text>
@@ -73,6 +79,7 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   components: {},
   data() {
@@ -133,11 +140,18 @@ export default {
     },
     getSubs() {
       this.$store.commit("setLoading", true);
-      this.$http.get("/trainers", { params: this.options }).then((response) => {
-        this.subs = response.data.data;
-        this.total = response.data.meta.pagination.total;
-        this.$store.commit("setLoading", false);
-      });
+      this.$http
+        .get("/trainers", {
+          params: this.options,
+          paramsSerializer: function paramsSerializer(params) {
+            return qs.stringify(params);
+          },
+        })
+        .then((response) => {
+          this.subs = response.data.data;
+          this.total = response.data.meta.pagination.total;
+          this.$store.commit("setLoading", false);
+        });
     },
   },
   watch: {
