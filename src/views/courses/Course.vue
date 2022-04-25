@@ -98,6 +98,19 @@
                     id="id"
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12">
+                  <v-autocomplete
+                    label="الاختصاص"
+                    outlined
+                    v-model="inputs.specialty"
+                    :items="specialties"
+                    item-text="title"
+                    item-value="id"
+                    :rules="[$rules.required()]"
+                    return-object
+                    id="id"
+                  ></v-autocomplete>
+                </v-col>
                 <v-col cols="12" md="12">
                   <v-md-editor
                     v-model="inputs.content"
@@ -185,7 +198,9 @@ export default {
         address: "",
         content: "",
         image_url: "",
+        specialty: "",
       },
+      specialties: [],
       isEdit: false,
       date: false,
       uploaded: false,
@@ -271,17 +286,35 @@ export default {
             this.course = data.data;
             this.inputs = data.data;
             this.text = data.content;
+            this.inputs.specialty = data.data.specialty.data.id;
+
+            console.log(this.inputs);
             this.isEdit = true;
             this.$store.commit("setLoading", false);
             this.$store.commit("setLoading", false);
           });
       }
     },
+    getSpecialty() {
+      this.$http
+        .get("/specialties", {
+          params: {
+            "pagination[pageSize]": 500,
+          },
+        })
+        .then(({ data }) => {
+          this.specialties = data.data;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
   },
   created() {
     if (this.$route.params.id != undefined) {
       this.isEdit;
       this.getcourse();
+      this.getSpecialty();
     }
   },
 };
