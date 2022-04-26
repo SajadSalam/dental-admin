@@ -62,6 +62,14 @@ const routes = [
     },
   },
   {
+    name: "specialties",
+    path: "/specialties",
+    component: () => import("@/views/specialties/Specialties.vue"),
+    meta: {
+      title: "الإختصاصات",
+    },
+  },
+  {
     name: "trainer",
     path: "/trainers/:id",
     component: () => import("@/views/trainers/Trainer.vue"),

@@ -10,9 +10,10 @@
     style="
       box-shadow: 0 0 15px 0 rgb(34 41 47 / 5%);
     "
+    
   >
     <v-list nav class="text-center">
-      <v-list-item>
+      <v-list-item >
         <v-list-item-title
           class="d-flex flex-column justify-center align-center"
         >
@@ -24,7 +25,6 @@
     <v-list nav>
       <v-list-item
         v-for="item in items"
-        class="white--text"
         :key="item.title"
         link
         :to="typeof item.route == 'string' ? { name: item.route } : item.route"

@@ -296,13 +296,13 @@ export default {
       }
     },
     getSpecialty() {
-      this.$http
-        .get("/specialties", {
+      this.$http.get("/specialties", {
           params: {
             "pagination[pageSize]": 500,
           },
         })
         .then(({ data }) => {
+          console.log(data)
           this.specialties = data.data;
         })
         .catch((e) => {
@@ -311,11 +311,11 @@ export default {
     },
   },
   created() {
-    if (this.$route.params.id != undefined) {
+    // if (this.$route.params.id != undefined) {
       this.isEdit;
       this.getcourse();
       this.getSpecialty();
-    }
+    // }
   },
 };
 </script>

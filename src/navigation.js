@@ -28,6 +28,13 @@ export default [
     icon: "mdi-book-open-page-variant",
   },
   {
+    title: "الإختصاصات",
+    route: {
+      name: "specialties",
+    },
+    icon: "mdi-book-open-page-variant",
+  },
+  {
     title: "الاخبار والنشاطات",
     route: {
       name: "dynamic",
