@@ -21,6 +21,13 @@ export default [
     icon: "mdi-account-multiple",
   },
   {
+    title: "المشتركين",
+    route: {
+      name: "news-subs",
+    },
+    icon: "mdi-account-multiple-check",
+  },
+  {
     title: "الكورسات",
     route: {
       name: "courses",

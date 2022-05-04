@@ -3,7 +3,10 @@
     <v-card :loading="$store.state.loading" elevation="0" class="transparent">
       <v-card-title>
         <h3>المتدربين</h3>
-        <v-spacer></v-spacer>
+        <v-spacer></v-spacer><v-btn :href="$service.url+'/api/course-sub/excel'" target="__blank" color="primary">
+          <v-icon>mdi-file-excel</v-icon>
+          تصدير الى Excel
+        </v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>

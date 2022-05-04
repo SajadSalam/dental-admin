@@ -12,6 +12,7 @@
     "@kangc/v-md-editor": "^1.7.9",
     "apexcharts": "^3.29.0",
     "core-js": "^3.6.5",
+    "export-from-json": "^1.6.0",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
     "qs": "^6.10.3",

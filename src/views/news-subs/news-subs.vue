@@ -2,13 +2,9 @@
   <div>
     <v-card :loading="$store.state.loading" elevation="0" class="transparent">
       <v-card-title>
-        <h3>المدربين</h3>
-        <v-spacer></v-spacer
-        ><v-btn
-          :href="$service.url + '/api/trainer/excel'"
-          target="__blank"
-          color="primary"
-        >
+        <h3>المشتركين</h3>
+        <v-spacer></v-spacer>
+        <v-btn :href="$service.url+'/api/news-sub/excel'" target="__blank" color="primary">
           <v-icon>mdi-file-excel</v-icon>
           تصدير الى Excel
         </v-btn>
@@ -28,12 +24,6 @@
               <template v-slot:item.created="{ item }">
                 {{ $service.formatDate(new Date(item.createdAt), false) }}
               </template>
-              <template v-slot:item.status="{ item }">
-                <v-chip label :color="status[item.status].color">
-                  {{ status[item.status].text }}
-                </v-chip>
-                <!-- {{ sub.status }} -->
-              </template>
               <template v-slot:item.phone_number="{ item }">
                 <span dir="ltr">
                   {{ item.phone_number }}
@@ -42,7 +32,7 @@
               </template>
               <template v-slot:item.actions="{ item }">
                 <div class="d-flex align-center">
-                  <v-btn color="primary" :to="`/trainers/${item.id}`" text>
+                  <v-btn color="primary" :to="`/news-subs/${item.id}`" text>
                     <v-icon>mdi-pencil</v-icon>
                     كل التفاصيل </v-btn
                   ><v-btn @click="showDeleteDialog(item)" color="error" icon>
@@ -92,33 +82,17 @@ export default {
   components: {},
   data() {
     return {
-      status: {
-        pending: {
-          color: "warning",
-          text: "قيد المراجعة",
-        },
-        approved: {
-          color: "success",
-          text: "تمت الموافقة",
-        },
-        accepted: {
-          color: "success",
-          text: "مقبول",
-        },
-        rejected: {
-          color: "error",
-          text: "مرفوض",
-        },
-      },
+    
       provinecs: [],
       subs: [],
       total: 1,
       headers: [
-        { text: "الاسم", value: "name" },
+        { text: "الاسم", value: "full_name" },
         { text: "رقم الهاتف", value: "phone_number" },
         { text: "البريد", value: "email" },
+        { text: "الاختصاص", value: "spec" },
+        { text: "رقم التسجيل في النقابة", value: "reg_num" },
         { text: "تاريخ التقديم", value: "created" },
-        { text: "الحالة", value: "status" },
         { text: "الاجراءات", value: "actions" },
       ],
       deleteDialog: false,
@@ -141,7 +115,7 @@ export default {
       this.deleteDialog = true;
     },
     deleteItem() {
-      this.$http.delete("/trainers/" + this.toDelete.id).then(() => {
+      this.$http.delete("/news-subs/" + this.toDelete.id).then(() => {
         this.deleteDialog = false;
         this.getSubs();
       });
@@ -149,7 +123,7 @@ export default {
     getSubs() {
       this.$store.commit("setLoading", true);
       this.$http
-        .get("/trainers", {
+        .get("/news-subs", {
           params: this.options,
           paramsSerializer: function paramsSerializer(params) {
             return qs.stringify(params);

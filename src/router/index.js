@@ -53,14 +53,7 @@ const routes = [
       title: "تفاصيل المتدرب",
     },
   },
-  {
-    name: "trainers",
-    path: "/trainers",
-    component: () => import("@/views/trainers/Trainers.vue"),
-    meta: {
-      title: "المدربين",
-    },
-  },
+  
   {
     name: "specialties",
     path: "/specialties",
@@ -70,11 +63,35 @@ const routes = [
     },
   },
   {
+    name: "trainers",
+    path: "/trainers",
+    component: () => import("@/views/trainers/Trainers.vue"),
+    meta: {
+      title: "المدربين",
+    },
+  },
+  {
     name: "trainer",
     path: "/trainers/:id",
     component: () => import("@/views/trainers/Trainer.vue"),
     meta: {
       title: "تفاصيل المدرب",
+    },
+  },
+  {
+    name: "news-subs",
+    path: "/news-subs",
+    component: () => import("@/views/news-subs/news-subs.vue"),
+    meta: {
+      title: "المشتركين",
+    },
+  },
+  {
+    name: "news-sub",
+    path: "/news-subs/:id",
+    component: () => import("@/views/news-subs/news-sub.vue"),
+    meta: {
+      title: "تفاصيل المشترك",
     },
   },
   {
