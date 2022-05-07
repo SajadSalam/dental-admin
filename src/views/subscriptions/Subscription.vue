@@ -89,15 +89,37 @@
                 ></v-textarea>
               </v-col>
               <v-col>
-                <v-btn
-                  color="warning"
-                  tag="a"
-                  :href="$service.url + sub.ima_id"
-                  target="_blank"
-                >
-                  <v-icon>mdi-file</v-icon>
-                  تنزيل الهوية
-                </v-btn>
+                <div class="d-flex">
+                  <v-btn
+                    color="warning"
+                    tag="a"
+                    :href="$service.url + sub.ima_id"
+                    target="_blank"
+                  >
+                    <v-icon>mdi-file</v-icon>
+                    تنزيل الهوية
+                  </v-btn>
+                  <v-btn
+                    color="primary"
+                    tag="a"
+                    class="mx-3"
+                    :href="$service.url + sub.passport"
+                    target="_blank"
+                  >
+                    <v-icon>mdi-file</v-icon>
+                    تنزيل الجواز
+                  </v-btn>
+                  <v-btn
+                    color="secondary"
+                    tag="a"
+                    :href="$service.url + sub.endorsement"
+                    target="_blank"
+                  >
+                    <v-icon>mdi-file</v-icon>
+                    تنزيل
+                    {{ sub.study == "pro" ? "الامر الاداري" : "تأييد الطالب" }}
+                  </v-btn>
+                </div>
               </v-col>
               <v-col cols="12">
                 <div class="d-flex justify-end">
@@ -168,7 +190,7 @@
             </p>
           </v-card-text>
         </v-card>
-        <p class="text-center mt-10">
+        <p v-else class="text-center mt-10">
           تم حذف الكورس الذي تم تسجيله من قبل هذا المتدرب
         </p>
       </v-col>
