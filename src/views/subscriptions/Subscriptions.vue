@@ -3,13 +3,55 @@
     <v-card :loading="$store.state.loading" elevation="0" class="transparent">
       <v-card-title>
         <h3>المتدربين</h3>
-        <v-spacer></v-spacer><v-btn :href="$service.url+'/api/course-sub/excel'" target="__blank" color="primary">
+        <v-spacer></v-spacer
+        ><v-btn
+          :href="$service.url + '/api/course-sub/excel'"
+          target="__blank"
+          color="primary"
+        >
           <v-icon>mdi-file-excel</v-icon>
           تصدير الى Excel
         </v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="بحث"
+              v-model="options.filters.name.$contains"
+              outlined
+              hide-details="auto"
+              prepend-inner-icon="mdi-magnify"
+              solo
+              flat
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="رقم الهاتف"
+              v-model="options.filters.phone_number.$contains"
+              outlined
+              hide-details="auto"
+              prepend-inner-icon="mdi-phone"
+              solo
+              flat
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-chip-group active-class="success" v-model="selectedStatus">
+              <v-chip filter :value="'all'">
+                الكل
+              </v-chip>
+              <v-chip
+                filter
+                v-for="(statuss, index) in Object.keys(status)"
+                :value="statuss"
+                :key="index"
+              >
+                {{ status[statuss].text }}
+              </v-chip>
+            </v-chip-group>
+          </v-col>
           <v-col cols="12">
             <v-data-table
               :headers="headers"
@@ -118,8 +160,17 @@ export default {
       ],
       deleteDialog: false,
       toDelete: {},
+      selectedStatus: "all",
       options: {
         populate: "*",
+        filters: {
+          name: {
+            $contains: "",
+          },
+          phone_number: {
+            $contains: "",
+          },
+        },
         pagination: {
           page: 1,
           pageSize: 15,
@@ -143,6 +194,13 @@ export default {
     },
     getSubs() {
       this.$store.commit("setLoading", true);
+      let status = this.selectedStatus;
+      if (status != "all") {
+        this.options.filters.status = status;
+      } else {
+        delete this.options.filters.status;
+      }
+
       this.$http
         .get("/course-subs", {
           params: this.options,
@@ -159,6 +217,12 @@ export default {
   },
   watch: {
     options: {
+      handler() {
+        this.getSubs();
+      },
+      deep: true,
+    },
+    selectedStatus: {
       handler() {
         this.getSubs();
       },

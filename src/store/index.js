@@ -22,8 +22,23 @@ export default new Vuex.Store({
         : null,
     passwordDialog: false,
     user: null,
+    snackbar: false,
+    snackbarMessage: "",
+    snackbarColor: "",
   },
   mutations: {
+    UPDATE_SNACKBAR(state, val) {
+      state.snackbar = val;
+    },
+
+    UPDATE_SNACKBAR_MESSAGE(state, { message, color = "error" }) {
+      state.snackbarMessage = message;
+      state.snackbarColor = color;
+
+      if (message != "") {
+        state.snackbar = true;
+      }
+    },
     UPDATE_RTL(state, val) {
       state.isRTL = val;
     },

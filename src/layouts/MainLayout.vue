@@ -3,6 +3,29 @@
     <v-app :style="colors">
       <navigation-bar v-if="$route.name !== 'login'" />
       <v-main :style="background">
+        <v-snackbar
+          top
+          right
+          :timeout="3000"
+          :color="$store.state.snackbarColor"
+          style="width: 100; max-width: 100%"
+          v-model="snackbar"
+        >
+          <span
+            v-if="
+              $store.state.snackbarMessage !== '' &&
+                $store.state.snackbarMessage !== null &&
+                $store.state.snackbarMessage !== undefined
+            "
+            v-html="$store.state.snackbarMessage"
+          ></span>
+          <span v-else> Something went wrong! </span>
+          <template v-slot:action="{ attrs }">
+            <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </template>
+        </v-snackbar>
         <app-bar v-if="$route.name !== 'login'" />
         <div class="wrapper px-5 py-3">
           <transition name="scale" mode="out-in">
@@ -60,6 +83,22 @@ export default {
   components: {
     AppBar,
     NavigationBar,
+  },
+  data() {
+    return {
+      snackbar: false,
+    };
+  },
+  watch: {
+    "$store.state.snackbar"() {
+      this.snackbar = this.$store.state.snackbar;
+    },
+    snackbar() {
+      this.$store.commit("UPDATE_SNACKBAR", this.snackbar);
+      if (!this.snackbar) {
+        this.$store.commit("UPDATE_SNACKBAR_MESSAGE", "");
+      }
+    },
   },
 };
 </script>

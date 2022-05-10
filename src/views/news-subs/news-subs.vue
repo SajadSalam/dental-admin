@@ -4,13 +4,39 @@
       <v-card-title>
         <h3>المشتركين</h3>
         <v-spacer></v-spacer>
-        <v-btn :href="$service.url+'/api/news-sub/excel'" target="__blank" color="primary">
+        <v-btn
+          :href="$service.url + '/api/news-sub/excel'"
+          target="__blank"
+          color="primary"
+        >
           <v-icon>mdi-file-excel</v-icon>
           تصدير الى Excel
         </v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="بحث"
+              v-model="options.filters.full_name.$contains"
+              outlined
+              hide-details="auto"
+              prepend-inner-icon="mdi-magnify"
+              solo
+              flat
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="رقم الهاتف"
+              v-model="options.filters.phone_number.$contains"
+              outlined
+              hide-details="auto"
+              prepend-inner-icon="mdi-phone"
+              solo
+              flat
+            ></v-text-field>
+          </v-col>
           <v-col cols="12">
             <v-data-table
               :headers="headers"
@@ -82,7 +108,6 @@ export default {
   components: {},
   data() {
     return {
-    
       provinecs: [],
       subs: [],
       total: 1,
@@ -99,6 +124,14 @@ export default {
       toDelete: {},
       options: {
         populate: "*",
+        filters: {
+          full_name: {
+            $contains: "",
+          },
+          phone_number: {
+            $contains: "",
+          },
+        },
         pagination: {
           page: 1,
           pageSize: 15,
