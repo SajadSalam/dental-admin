@@ -98,7 +98,18 @@
                     id="id"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="6">
+                  <v-autocomplete
+                    label="الموقع"
+                    outlined
+                    v-model="inputs.location"
+                    :items="locations"
+                    item-text="title"
+                    item-value="value"
+                    :rules="[$rules.required()]"
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="6">
                   <v-autocomplete
                     label="الاختصاص"
                     outlined
@@ -187,6 +198,16 @@ export default {
       course: {},
       toEdit: [],
       image: null,
+      locations: [
+        {
+          title: "بغداد",
+          value: "baghdad",
+        },
+        {
+          title: "البصرة",
+          value: "basra",
+        },
+      ],
       file: null,
       vaild: false,
       inputs: {
@@ -296,13 +317,14 @@ export default {
       }
     },
     getSpecialty() {
-      this.$http.get("/specialties", {
+      this.$http
+        .get("/specialties", {
           params: {
             "pagination[pageSize]": 500,
           },
         })
         .then(({ data }) => {
-          console.log(data)
+          console.log(data);
           this.specialties = data.data;
         })
         .catch((e) => {
@@ -312,9 +334,9 @@ export default {
   },
   created() {
     // if (this.$route.params.id != undefined) {
-      this.isEdit;
-      this.getcourse();
-      this.getSpecialty();
+    this.isEdit;
+    this.getcourse();
+    this.getSpecialty();
     // }
   },
 };

@@ -162,6 +162,8 @@ export default {
       toDelete: {},
       selectedStatus: "all",
       options: {
+        sort: "createdAt:desc",
+        _order: "asc",
         populate: "*",
         filters: {
           name: {

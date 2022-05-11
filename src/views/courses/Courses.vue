@@ -11,6 +11,17 @@
       </v-card-title>
       <v-card-text>
         <v-row>
+          <v-col cols="12" md="3">
+            <v-text-field
+              label="بحث"
+              v-model="options.filters.title.$contains"
+              outlined
+              hide-details="auto"
+              prepend-inner-icon="mdi-magnify"
+              solo
+              flat
+            ></v-text-field>
+          </v-col>
           <v-col cols="12">
             <v-data-table
               :headers="headers"
@@ -82,6 +93,20 @@ export default {
     return {
       courses: [],
       total: 1,
+      locations: [
+        {
+          title: "الكل",
+          value: "",
+        },
+        {
+          title: "بغداد",
+          value: "baghdad",
+        },
+        {
+          title: "البصرة",
+          value: "basra",
+        },
+      ],
       headers: [
         { text: "الاسم", value: "title" },
         { text: "الاسم انكليزي", value: "en_title" },
@@ -90,12 +115,19 @@ export default {
         { text: "تاريخ الانتهاء", value: "end_date" },
         { text: "الاجراءات", value: "actions" },
       ],
+
       deleteDialog: false,
       toDelete: {},
       options: {
+        sort: "createdAt:desc",
         populate: {
           course_subs: {
             fields: ["id"],
+          },
+        },
+        filters: {
+          title: {
+            $contains: "",
           },
         },
         pagination: {
